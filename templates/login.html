@@ -1,0 +1,105 @@
+{% extends "base.html" %}
+
+{% block content %}
+<style>
+ body {
+  background-color: #290c3d; /* fallback color */
+  background-image: url("{{ url_for('static', filename='bg.jpg') }}");
+  background-repeat: no-repeat;
+  background-size: cover;   /* cover full screen */
+  font-family: 'Cinzel', serif;
+}
+  .login-wrapper {
+    height: 100vh; /* full screen height */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .card {
+    background: rgba(108, 102, 20, 0.7); /* translucent dark */
+    color: #fff; 
+    border-radius: 15px;
+    border: 3px solid #e6c200; /* royal gold border */
+    box-shadow: 0 0 20px rgba(230, 194, 0, 0.5);
+  }
+
+  .card-title {
+    color: #e6c200; /* royal gold heading */
+    text-align: center;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 25px;
+  }
+
+  .form-label, .form-text {
+    color: #fff !important;
+    font-weight: 600;
+  }
+
+  .form-control {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid #e6c200;
+    color: #fff;
+  }
+  .form-control:focus {
+    background: rgba(255, 255, 255, 0.15);
+    border-color: #ffd700;
+    box-shadow: 0 0 10px rgba(230, 194, 0, 0.7);
+    color: #fff;
+  }
+
+  .btn-primary {
+    background: linear-gradient(135deg, #ffd700, #e6c200);
+    border: none;
+    color: #451c55;
+    font-weight: 600;
+    transition: 0.3s ease;
+  }
+
+  .btn-primary:hover {
+    background: linear-gradient(135deg, #e6c200, #ffd700);
+    box-shadow: 0 0 15px rgba(230, 194, 0, 0.9);
+    transform: scale(1.05);
+  }
+
+  /* custom note text style */
+  .note-text {
+    color: #ffcc00; /* golden yellow */
+    font-size: 1.1rem;
+    font-style: italic;
+    text-align: center;
+    margin-top: 20px;
+  }
+</style>
+
+<div class="login-wrapper">
+  <div class="col-md-5 col-lg-6">
+    <div class="card shadow-lg border-0">
+      <div class="card-body p-5">
+        <h3 class="card-title">Welcome</h3>
+
+        <form method="post">
+          <div class="mb-3">
+            <label class="form-label">Email ID</label>
+            <input type="email" name="email" class="form-control" placeholder="your college email" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Password (if already set)</label>
+            <input type="password" name="password" class="form-control" placeholder="password">
+          </div>
+          <div class="d-grid gap-2">
+            <button class="btn btn-primary">Login \ Continue</button>
+          </div>
+        </form>
+
+        <hr class="my-4">
+        <p class="note-text">
+          If this is your first time and you don't have a password, enter your email and continue — you'll be asked to set a password.
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

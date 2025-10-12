@@ -1,0 +1,42 @@
+/* Luxury dark-gold theme */
+body {
+  background:#290c3d;
+  color: #f3efe6;
+  min-height: 100vh;
+}
+.card {
+  background: rgba(89, 1, 61, 0.03);
+  border: 0;
+  border-radius: 12px;
+}
+.btn-primary {
+  background: linear-gradient(90deg,#b88b1f,#ffd97a);
+  border: none;
+  color: #e7e5e5;
+  font-weight: 600;
+  box-shadow: 0 8px 20px rgba(184,139,31,0.12);
+}
+.btn-outline-primary {
+  color: #ffd97a;
+  border-color: rgba(255,217,122,0.18);
+}
+.splash {
+  height: 70vh;
+  background: linear-gradient(135deg, rgba(255,255,255,0.02), rgba(0,0,0,0.3));
+  border-radius: 12px;
+  margin-top: 30px;
+}
+.splash-img {
+  width: 220px;
+  height: 220px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 6px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 12px 30px rgba(255, 255, 255, 0.6);
+}
+.list-group-item {
+  background: transparent;
+  color: #f3efe6;
+}
+.badge.bg-success { background-color: #16a34a !important; }
+small.text-muted { color: rgba(243,239,230,0.65) !important; }

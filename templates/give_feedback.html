@@ -1,0 +1,155 @@
+{% extends "base.html" %}
+{% block content %}
+<style>
+body {
+    background-color: #290c3d; /* fallback color */
+    background-image: url("{{ url_for('static', filename='bg.jpg') }}");
+    background-repeat: no-repeat;
+    background-size: cover;   /* cover full screen */
+    background-attachment: fixed; /* keeps the image in place */
+    font-family: 'Cinzel', serif;
+}
+
+
+  .feedback-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 30px;
+    padding: 50px 0;
+  }
+
+  .card {
+    background: rgba(108, 102, 20, 0.7); /* translucent royal box */
+    color: #fff;
+    border-radius: 15px;
+    border: 3px solid #e6c200; /* golden border */
+    box-shadow: 0 0 20px rgba(230, 194, 0, 0.5);
+    width: 700px;       /* rectangular width */
+    min-height: 250px;  /* rectangular height */
+  }
+
+  .card h5 {
+    color: #ffd700;
+    text-align: center;
+    font-weight: 600;
+    letter-spacing: 1px;
+    margin-bottom: 20px;
+  }
+
+  .list-group-item {
+    background: rgba(255, 255, 255, 0.05);
+    color: #fff;
+    border: 1px solid #e6c200;
+    border-radius: 8px;
+    margin-bottom: 8px;
+    transition: 0.3s;
+  }
+  .list-group-item:hover {
+    background: rgba(255, 215, 0, 0.1);
+    transform: scale(1.02);
+  }
+
+  .badge.bg-success {
+    background: linear-gradient(135deg, #ffd700, #e6c200);
+    color: #451c55;
+    font-weight: bold;
+    border-radius: 10px;
+  }
+
+  .form-control {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid #e6c200;
+    color: #fff;
+  }
+  .form-control:focus {
+    background: rgba(255, 255, 255, 0.15);
+    border-color: #ffd700;
+    box-shadow: 0 0 10px rgba(230, 194, 0, 0.7);
+  }
+
+  .form-check-label {
+    color: #ffcc00;
+    font-weight: 600;
+  }
+
+  .btn-primary {
+    background: linear-gradient(135deg, #ffd700, #e6c200);
+    border: none;
+    color: #451c55;
+    font-weight: 600;
+    transition: 0.3s ease;
+  }
+  .btn-primary:hover {
+    background: linear-gradient(135deg, #e6c200, #ffd700);
+    box-shadow: 0 0 15px rgba(230, 194, 0, 0.9);
+    transform: scale(1.05);
+  }
+
+  p.small {
+    color: #ddd;
+    font-style: italic;
+  }
+</style>
+
+<div class="feedback-wrapper">
+  <!-- Tips card first -->
+  <div class="card shadow-sm">
+    <div class="card-body">
+      <h5>Notes</h5>
+      <p class="small">
+        Click a name to expand and type your feedback.  
+        After sending, the row will show a golden ✓ tick for you.  
+        You can send feedback to multiple members.
+      </p>
+      <hr>
+      <p class="small">
+        If you have already given feedback, you can expand the name again and use the 
+        <span style="color:#ffd700; font-weight:bold;">Update</span> button to edit or improve your feedback anytime.
+      </p>
+      <hr>
+      <p class="small">
+        You can also download the feedbacks you gave from your <strong>View page</strong>.
+      </p>
+    </div>
+  </div>
+
+  <!-- Members list card below -->
+  <div class="card shadow-sm">
+    <div class="card-body">
+      <h5>Pick a member to give feedback</h5>
+      <div class="list-group">
+        {% for r in recipients %}
+          <a class="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
+             data-bs-toggle="collapse" href="#fb{{ r.id }}" role="button" aria-expanded="false">
+            <div>{{ r.name }}</div>
+            <div>
+              {% if r.id in feedback_map %}
+                <span class="badge bg-success">✓ Sent</span>
+              {% endif %}
+            </div>
+          </a>
+          <div class="collapse" id="fb{{ r.id }}">
+            <div class="card card-body mt-2">
+              <form method="post">
+                <input type="hidden" name="recipient_id" value="{{ r.id }}">
+                <div class="mb-2">
+                  <textarea name="content" rows="4" class="form-control" placeholder="Write your feedback..." required>{{ feedback_map[r.id].content if r.id in feedback_map else '' }}</textarea>
+                </div>
+                <div class="form-check mb-2">
+                  <input class="form-check-input" type="checkbox" value="1" name="visible" id="vis{{ r.id }}"
+                    {% if r.id not in feedback_map or feedback_map[r.id].visible %}checked{% endif %}>
+                  <label class="form-check-label" for="vis{{ r.id }}">Show my name publicly under recipient</label>
+                </div>
+                <button class="btn btn-primary btn-sm">
+                  {% if r.id in feedback_map %}Update{% else %}Send{% endif %}
+                </button>
+              </form>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

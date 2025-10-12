@@ -1,0 +1,76 @@
+# data_init.py
+
+def seed_users(db, User):
+    """Seed user data safely. Pass db and User to avoid circular imports."""
+    users = [
+        ("AADESH. S", "aid258001@saranathan.ac.in"),
+        ("AADHITHIYA PRAKASH. S", "aid258002@saranathan.ac.in"),
+        ("AASIS MOHAMED. A", "aid258003@saranathan.ac.in"),
+        ("AATHITHIYAA. V", "aid258004@saranathan.ac.in"),
+        ("ABINAYA. M", "aid258005@saranathan.ac.in"),
+        ("ABINAYAA. J", "aid258006@saranathan.ac.in"),
+        ("AISWARIYA. R P", "aid258007@saranathan.ac.in"),
+        ("AJAY KUMAR. P", "aid258008@saranathan.ac.in"),
+        ("AKSHAYA. S", "aid258009@saranathan.ac.in"),
+        ("AMIRTHA. N", "aid258010@saranathan.ac.in"),
+        ("ANANTHIKA. L", "aid258011@saranathan.ac.in"),
+        ("ANBU. S V", "aid258012@saranathan.ac.in"),
+        ("ARCHANA. A", "aid258013@saranathan.ac.in"),
+        ("ARSATH PARVESH. M", "aid258014@saranathan.ac.in"),
+        ("BALAJI. V", "aid258015@saranathan.ac.in"),
+        ("BALAJOTHY. P", "aid258016@saranathan.ac.in"),
+        ("BENEDICT RATZINGER. P", "aid258017@saranathan.ac.in"),
+        ("BHARATHI. S", "aid258018@saranathan.ac.in"),
+        ("BOOMIKA. S", "aid258019@saranathan.ac.in"),
+        ("DHARANESHWAR. K", "aid258020@saranathan.ac.in"),
+        ("DHARANYA. G", "aid258021@saranathan.ac.in"),
+        ("DHARSHINI. A", "aid258022@saranathan.ac.in"),
+        ("DHARSHINI. J", "aid258023@saranathan.ac.in"),
+        ("DHEVAVARNA. T M", "aid258024@saranathan.ac.in"),
+        ("DHIVIA BHARATHI. B", "aid258025@saranathan.ac.in"),
+        ("DINESHKUMAR. P", "aid258026@saranathan.ac.in"),
+        ("FATHIMA MARIYAM. Z", "aid258027@saranathan.ac.in"),
+        ("FRANCIS ROBINA. S", "aid258028@saranathan.ac.in"),
+        ("GABIN CLEMENT. A", "aid258029@saranathan.ac.in"),
+        ("GAYATHRI. R", "aid258030@saranathan.ac.in"),
+        ("GIRIDHARAN. P", "aid258031@saranathan.ac.in"),
+        ("GOMATHIRAGAVI. S", "aid258032@saranathan.ac.in"),
+        ("GUHAN. R", "aid258033@saranathan.ac.in"),
+        ("GUNALAN. S", "aid258034@saranathan.ac.in"),
+        ("HARIBASKAR. M", "aid258035@saranathan.ac.in"),
+        ("HASHAN. R A", "aid258036@saranathan.ac.in"),
+        ("IMAM AKRAM. B", "aid258037@saranathan.ac.in"),
+        ("INDHIRA PRIYA DHARSHINI. G C", "aid258038@saranathan.ac.in"),
+        ("IYYAPPAN. E", "aid258039@saranathan.ac.in"),
+        ("JAYANTHAN. RM", "aid258040@saranathan.ac.in"),
+        ("JAYASHRI. V", "aid258041@saranathan.ac.in"),
+        ("JEEVA. S", "aid258042@saranathan.ac.in"),
+        ("JENNIFER RUBINA. J", "aid258043@saranathan.ac.in"),
+        ("JOSVA", "aid258044@saranathan.ac.in"),
+        ("KAMALESH. M", "aid258045@saranathan.ac.in"),
+        ("KARPOORAASUNDARAPANDIAN. P", "aid258046@saranathan.ac.in"),
+        ("KARTHICK. S", "aid258047@saranathan.ac.in"),
+        ("KARTHIKA. B", "aid258048@saranathan.ac.in"),
+        ("KAVIYA. P", "aid258049@saranathan.ac.in"),
+        ("KEERTANA. R", "aid258050@saranathan.ac.in"),
+        ("KEERTHANA. A", "aid258051@saranathan.ac.in"),
+        ("KIRUTHIKA. M M", "aid258052@saranathan.ac.in"),
+        ("KRISHNAKUMAR. S", "aid258053@saranathan.ac.in"),
+        ("LINKESH. V B", "aid258054@saranathan.ac.in"),
+        ("LOGAPPRIYA. G", "aid258055@saranathan.ac.in"),
+        ("LOKESH WARAN. A", "aid258056@saranathan.ac.in"),
+        ("MAADHAVPRASAD. R", "aid258057@saranathan.ac.in"),
+        ("MALAVEEKA SRIDHAR", "aid258058@saranathan.ac.in"),
+        ("MANIMARAN. S", "aid258059@saranathan.ac.in"),
+        ("MANOJ. K", "aid258060@saranathan.ac.in"),
+        ("DHIVAKAR. B", "aid258121@saranathan.ac.in"),
+        ("SABARISH. M", "aid258123@saranathan.ac.in"),
+    ]
+
+    for name, email in users:
+        if not User.query.filter_by(email=email).first():
+            u = User(name=name, email=email)
+            db.session.add(u)
+
+    db.session.commit()
+    print("✅ Users seeded successfully.")

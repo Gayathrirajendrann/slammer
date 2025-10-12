@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+{% block content %}
+<style>
+ body {
+  background-color: #290c3d; /* fallback color */
+  background-image: url("{{ url_for('static', filename='bg.jpg') }}");
+  background-repeat: no-repeat;
+  background-size: cover;   /* cover full screen */
+  font-family: 'Cinzel', serif;
+}
+
+  .action-wrapper {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+  }
+
+  .action-card {
+    background: rgba(108, 102, 20, 0.7); /* translucent royal dark */
+    padding: 40px;
+    border-radius: 15px;
+    border: 3px solid #e6c200;
+    box-shadow: 0 0 20px rgba(230, 194, 0, 0.5);
+    max-width: 600px;
+    width: 100%;
+  }
+
+  .action-card h1 {
+    color: #e6c200;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 15px;
+  }
+
+  .action-card p {
+    font-size: 1.2rem;
+    color: #f8f8f2;
+    margin-bottom: 30px;
+  }
+
+  .btn-lg {
+    padding: 12px 30px;
+    font-weight: 600;
+    font-size: 1.1rem;
+    border-radius: 30px;
+    transition: all 0.3s ease;
+  }
+
+  .btn-outline-primary {
+     background: #e6c200;
+    color: #451c55;
+    box-shadow: 0 0 15px rgba(230, 194, 0, 0.9);
+    transform: scale(1.05);
+  }
+
+  .btn-outline-primary {
+    background: #e6c200;
+    color: #451c55;
+    box-shadow: 0 0 15px rgba(230, 194, 0, 0.9);
+    transform: scale(1.05);
+  }
+
+  .btn-primary {
+    background: linear-gradient(135deg, #ffd700, #e6c200);
+    border: none;
+    color: #451c55;
+    font-weight: 700;
+  }
+
+  .btn-primary {
+    background: linear-gradient(135deg, #e6c200, #ffd700);
+    box-shadow: 0 0 20px rgba(230, 194, 0, 1);
+    transform: scale(1.05);
+  }
+</style>
+
+<div class="action-wrapper">
+  <div class="action-card">
+    <h1>Hello, {{ user.name }}</h1>
+    <h2>Choose an action </h2>
+    <div class="d-flex justify-content-center gap-3 mt-4 flex-wrap">
+      <a class="btn btn-lg btn-outline-primary" href="{{ url_for('give_feedback') }}">Give Feedback</a>
+      <a class="btn btn-lg btn-primary" href="{{ url_for('view_feedback') }}">View Your Feedback</a>
+    </div>
+  </div>
+</div>
+{% endblock %}

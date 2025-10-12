@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+{% block navbar %}{% endblock %}  {# Removes black bar on splash #}
+
+{% block content %}
+<style>
+ body {
+  background-color: #290c3d; /* fallback color */
+  background-image: url("{{ url_for('static', filename='bg.jpg') }}");
+  background-repeat: no-repeat;
+  background-size: cover;   /* cover full screen */
+  font-family: 'Cinzel', serif;
+}
+
+
+  .splash {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: 
+      url("https://www.toptal.com/designers/subtlepatterns/patterns/dark_embroidery.png") repeat;
+    background-size: auto;
+    position: relative;
+  }
+
+  .splash-content {
+    text-align: center;
+    color: #f8f8f2;
+    z-index: 2;
+  }
+
+  .splash-content h1 {
+    font-size: 6rem;
+    font-weight: 900;
+    color: #e6c200;
+    margin-bottom: 15px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    animation: fadeDown 2s ease forwards;
+  }
+
+  .splash-content p {
+    font-size: 1.4rem;
+    color: #ddd;
+    font-style: italic;
+    letter-spacing: 1px;
+    animation: fadeUp 2.5s ease forwards;
+  }
+
+  .luxury-divider {
+    width: 150px;
+    height: 4px;
+    background: linear-gradient(to right, transparent, #e6c200, transparent);
+    margin: 20px auto;
+    border-radius: 2px;
+    animation: expand 2s ease forwards;
+  }
+
+  .enter-btn {
+    margin-top: 30px;
+    padding: 12px 40px;
+    font-size: 1.2rem;
+    font-family: 'Cinzel', serif;
+    font-weight: 600;
+    color: #000;
+    background: linear-gradient(135deg, #ffd700, #e6c200);
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    text-decoration: none;
+    box-shadow: 0 0 15px rgba(230, 194, 0, 0.7);
+    transition: all 0.3s ease;
+  }
+
+  .enter-btn:hover {
+    background: linear-gradient(135deg, #e6c200, #ffd700);
+    box-shadow: 0 0 25px rgba(230, 194, 0, 1);
+    transform: scale(1.05);
+  }
+</style>
+
+<div class="splash">
+  <div class="splash-content">
+    <h1>பொற்கால நாட்கள்</h1>
+    <div class="luxury-divider"></div>
+    <p>A Royal Digital Slam Book</p>
+    <a href="{{ url_for('login') }}" class="enter-btn">Enter</a>
+  </div>
+</div>
+{% endblock %}
