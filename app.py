@@ -260,6 +260,53 @@ def download_given_pdf():           # The function name is also the endpoint nam
         mimetype="application/pdf"
     )
 
+#-------------------------------
+@app.route('/download-received-pdf')
+def download_received_pdf():
+    user = current_user()
+    if not user:
+        return redirect(url_for('login'))
+
+    # Get all feedbacks received
+    received = Feedback.query.filter_by(recipient_id=user.id).order_by(Feedback.created_at.desc()).all()
+
+    # Create a PDF in memory
+    from io import BytesIO
+    from reportlab.pdfgen import canvas
+    from reportlab.lib.pagesizes import A4
+
+    pdf_buffer = BytesIO()
+    c = canvas.Canvas(pdf_buffer, pagesize=A4)
+    width, height = A4
+    y = height - 50
+
+    c.setFont("Helvetica-Bold", 16)
+    c.drawString(50, y, f"Feedbacks Received by {user.name}")
+    y -= 40
+
+    c.setFont("Helvetica", 12)
+    for f in received:
+        sender_name = f.sender.name if f.sender else "Unknown"
+        content = f.content
+        created_at = f.created_at.strftime("%Y-%m-%d %H:%M")
+        line = f"From {sender_name} ({created_at}): {content}"
+        c.drawString(50, y, line)
+        y -= 20
+        if y < 50:
+            c.showPage()
+            y = height - 50
+
+    c.save()
+    pdf_buffer.seek(0)
+
+    return send_file(
+        pdf_buffer,
+        as_attachment=True,
+        download_name="received_feedbacks.pdf",
+        mimetype="application/pdf"
+    )
+
+
 # -------------------- MAIN --------------------
 if __name__ == '__main__':
     app.run(debug=True)
