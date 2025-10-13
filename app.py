@@ -330,8 +330,6 @@ def download_received_pdf():
         mimetype="application/pdf"
     )
 
-    
-    )
 #--------------------------------------
 @app.route('/add-sridevi-final')
 def add_sridevi_final():
