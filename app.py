@@ -229,16 +229,15 @@ def view_feedback():
 
 
 #------------------------------------
-@app.route('/download-given-pdf')  # The URL for this route
-def download_given_pdf():           # The function name is also the endpoint name
-    user = current_user()           # Get the logged-in user
+@app.route('/download-given-pdf')
+def download_given_pdf():
+    user = current_user()
     if not user:
         return redirect(url_for('login'))
 
-    # Get all feedbacks the user gave
+    # Fetch all feedbacks given by the user
     given = Feedback.query.filter_by(sender_id=user.id).order_by(Feedback.created_at.desc()).all()
 
-    # Create a PDF in memory
     from io import BytesIO
     from reportlab.pdfgen import canvas
     from reportlab.lib.pagesizes import A4
@@ -246,8 +245,14 @@ def download_given_pdf():           # The function name is also the endpoint nam
     pdf_buffer = BytesIO()
     c = canvas.Canvas(pdf_buffer, pagesize=A4)
     width, height = A4
-    y = height - 50
 
+    # ---- Full-page image on the first page ----
+    img_path = "1234.jpg"  # Path to your image
+    c.drawImage(img_path, 0, 0, width=width, height=height)
+    c.showPage()  # Move to next page after image
+
+    # ---- Page 2: Feedback content ----
+    y = height - 50
     c.setFont("Helvetica-Bold", 16)
     c.drawString(50, y, f"Feedbacks Given by {user.name}")
     y -= 40
@@ -274,17 +279,16 @@ def download_given_pdf():           # The function name is also the endpoint nam
         mimetype="application/pdf"
     )
 
-#-------------------------------
+#------------------------------------
 @app.route('/download-received-pdf')
 def download_received_pdf():
     user = current_user()
     if not user:
         return redirect(url_for('login'))
 
-    # Get all feedbacks received
+    # Fetch all feedbacks received by the user
     received = Feedback.query.filter_by(recipient_id=user.id).order_by(Feedback.created_at.desc()).all()
 
-    # Create a PDF in memory
     from io import BytesIO
     from reportlab.pdfgen import canvas
     from reportlab.lib.pagesizes import A4
@@ -292,8 +296,14 @@ def download_received_pdf():
     pdf_buffer = BytesIO()
     c = canvas.Canvas(pdf_buffer, pagesize=A4)
     width, height = A4
-    y = height - 50
 
+    # ---- Full-page image on the first page ----
+    img_path = "1234.jpg"  # Path to your image
+    c.drawImage(img_path, 0, 0, width=width, height=height)
+    c.showPage()  # Move to next page after image
+
+    # ---- Page 2: Feedback content ----
+    y = height - 50
     c.setFont("Helvetica-Bold", 16)
     c.drawString(50, y, f"Feedbacks Received by {user.name}")
     y -= 40
@@ -318,6 +328,9 @@ def download_received_pdf():
         as_attachment=True,
         download_name="received_feedbacks.pdf",
         mimetype="application/pdf"
+    )
+
+    
     )
 #--------------------------------------
 @app.route('/add-sridevi-final')
