@@ -161,14 +161,25 @@ def dashboard():
 
 
 # -------------------- FEEDBACK --------------------
+
 @app.route('/give-feedback', methods=['GET', 'POST'])
 def give_feedback():
     user = current_user()
     if not user:
         return redirect(url_for('login'))
 
+    # Get all users ordered by name
     users = User.query.order_by(User.name).all()
+    # Exclude the current user
     recipients = [u for u in users if u.id != user.id]
+
+    # Ensure Sridevi is visible to all students
+    sridevi = User.query.filter_by(email="sridevi-aid@saranathan.ac.in").first()
+    if sridevi and user.email != sridevi.email and sridevi not in recipients:
+        recipients.append(sridevi)
+
+    # Optional: sort recipients alphabetically
+    recipients = sorted(recipients, key=lambda u: u.name)
 
     if request.method == 'POST':
         recipient_id = int(request.form.get('recipient_id'))
@@ -179,6 +190,7 @@ def give_feedback():
             flash("Feedback cannot be empty.", "danger")
             return redirect(url_for('give_feedback'))
 
+        # Check if feedback already exists
         existing = Feedback.query.filter_by(sender_id=user.id, recipient_id=recipient_id).first()
         if existing:
             existing.content = content
@@ -192,6 +204,7 @@ def give_feedback():
         db.session.commit()
         return redirect(url_for('give_feedback'))
 
+    # Map of existing feedbacks given by the user
     feedback_map = {f.recipient_id: f for f in user.given_feedbacks}
 
     return render_template(
@@ -211,6 +224,7 @@ def view_feedback():
     given = Feedback.query.filter_by(sender_id=user.id).order_by(Feedback.created_at.desc()).all()
     received = Feedback.query.filter_by(recipient_id=user.id).order_by(Feedback.created_at.desc()).all()
     return render_template('view_feedback.html', user=user, given=given, received=received)
+
 
 
 
