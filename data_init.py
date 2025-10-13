@@ -65,6 +65,7 @@ def seed_users(db, User):
         ("MANOJ. K", "aid258060@saranathan.ac.in"),
         ("DHIVAKAR. B", "aid258121@saranathan.ac.in"),
         ("SABARISH. M", "aid258123@saranathan.ac.in"),
+        ("A.SRIDEVI MAM (RAJAMATHA)","sridevi-aid@saranathan.ac.in"),
     ]
 
     for name, email in users:
