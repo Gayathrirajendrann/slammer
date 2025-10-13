@@ -305,6 +305,22 @@ def download_received_pdf():
         download_name="received_feedbacks.pdf",
         mimetype="application/pdf"
     )
+#--------------------------------------
+@app.route('/add-sridevi')
+def add_sridevi():
+    from werkzeug.security import generate_password_hash
+    existing = User.query.filter_by(email="sridevi-aid@saranathan.ac.in").first()
+    if existing:
+        return "✅ User already exists."
+    
+    new_user = User(
+        name="A.SRIDEVI MAM (RAJAMATHA)",
+        email="sridevi-aid@saranathan.ac.in",
+        password_hash=generate_password_hash("welcome123")  # temporary password
+    )
+    db.session.add(new_user)
+    db.session.commit()
+    return "✅ User added successfully!"
 
 
 # -------------------- MAIN --------------------
