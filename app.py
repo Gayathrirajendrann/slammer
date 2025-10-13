@@ -306,21 +306,27 @@ def download_received_pdf():
         mimetype="application/pdf"
     )
 #--------------------------------------
-@app.route('/add-sridevi')
-def add_sridevi():
-    from werkzeug.security import generate_password_hash
-    existing = User.query.filter_by(email="sridevi-aid@saranathan.ac.in").first()
-    if existing:
-        return "✅ User already exists."
-    
+@app.route('/add-sridevi-final')
+def add_sridevi_final():
+    # Check if Sridevi already exists
+    user = User.query.filter_by(email="sridevi-aid@saranathan.ac.in").first()
+    if user:
+        return f"✅ Sridevi already exists: {user.id} - {user.name}"
+
+    # Add Sridevi
     new_user = User(
         name="A.SRIDEVI MAM (RAJAMATHA)",
-        email="sridevi-aid@saranathan.ac.in",
-        password_hash=generate_password_hash("welcome123")  # temporary password
+        email="sridevi-aid@saranathan.ac.in"
     )
     db.session.add(new_user)
     db.session.commit()
-    return "✅ User added successfully!"
+    return f"✅ Added Sridevi: {new_user.id} - {new_user.name}"
+#-----------------------------------------------
+@app.route('/all-users')
+def all_users():
+    users = User.query.order_by(User.name).all()
+    return "<br>".join(f"{u.id} - {u.name} ({u.email})" for u in users)
+
 
 
 # -------------------- MAIN --------------------
