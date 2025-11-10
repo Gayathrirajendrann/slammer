@@ -235,21 +235,21 @@ def download_given_pdf():
     if not user:
         return redirect(url_for('login'))
 
-    # Fetch all feedbacks given by the user
     given = Feedback.query.filter_by(sender_id=user.id).order_by(Feedback.created_at.desc()).all()
 
     from io import BytesIO
     from reportlab.pdfgen import canvas
     from reportlab.lib.pagesizes import A4
+    from textwrap import wrap
 
     pdf_buffer = BytesIO()
     c = canvas.Canvas(pdf_buffer, pagesize=A4)
     width, height = A4
 
     # ---- Full-page image on the first page ----
-    img_path = "1234.jpg"  # Path to your image
+    img_path = "1234.jpg"  # Your background image
     c.drawImage(img_path, 0, 0, width=width, height=height)
-    c.showPage()  # Move to next page after image
+    c.showPage()
 
     # ---- Page 2: Feedback content ----
     y = height - 50
@@ -258,16 +258,32 @@ def download_given_pdf():
     y -= 40
 
     c.setFont("Helvetica", 12)
+
     for f in given:
         recipient_name = f.recipient.name
-        content = f.content
         created_at = f.created_at.strftime("%Y-%m-%d %H:%M")
-        line = f"To {recipient_name} ({created_at}): {content}"
-        c.drawString(50, y, line)
+        content = f.content.strip()
+
+        # Title line
+        title_line = f"To {recipient_name} ({created_at}):"
+        c.drawString(50, y, title_line)
         y -= 20
+
+        # Wrap feedback text to fit the page width
+        wrapped_lines = wrap(content, width=90)  # adjust 90 if text still overflows
+        for line in wrapped_lines:
+            c.drawString(70, y, line)
+            y -= 15
+            if y < 50:  # Start a new page if space runs out
+                c.showPage()
+                y = height - 50
+                c.setFont("Helvetica", 12)
+
+        y -= 10  # extra space between feedbacks
         if y < 50:
             c.showPage()
             y = height - 50
+            c.setFont("Helvetica", 12)
 
     c.save()
     pdf_buffer.seek(0)
@@ -278,6 +294,7 @@ def download_given_pdf():
         download_name="given_feedbacks.pdf",
         mimetype="application/pdf"
     )
+
 
 #------------------------------------
 @app.route('/download-received-pdf')
@@ -292,6 +309,7 @@ def download_received_pdf():
     from io import BytesIO
     from reportlab.pdfgen import canvas
     from reportlab.lib.pagesizes import A4
+    from textwrap import wrap
 
     pdf_buffer = BytesIO()
     c = canvas.Canvas(pdf_buffer, pagesize=A4)
@@ -309,16 +327,26 @@ def download_received_pdf():
     y -= 40
 
     c.setFont("Helvetica", 12)
+    max_width = 90  # characters per line (adjust as needed)
+
     for f in received:
         sender_name = f.sender.name if f.sender else "Unknown"
-        content = f.content
         created_at = f.created_at.strftime("%Y-%m-%d %H:%M")
-        line = f"From {sender_name} ({created_at}): {content}"
-        c.drawString(50, y, line)
+        header_line = f"From {sender_name} ({created_at}):"
+        c.drawString(50, y, header_line)
         y -= 20
-        if y < 50:
-            c.showPage()
-            y = height - 50
+
+        # Wrap content text
+        wrapped_content = wrap(f.content, width=max_width)
+        for line in wrapped_content:
+            c.drawString(70, y, line)
+            y -= 15
+            if y < 50:
+                c.showPage()
+                c.setFont("Helvetica", 12)
+                y = height - 50
+
+        y -= 10  # Add a bit of space after each feedback
 
     c.save()
     pdf_buffer.seek(0)
